@@ -1,0 +1,8 @@
+
+to Older People (90+)
+
+jobs: Seld emplyed seems to drop the risk , private work seems to increse the risk significly
+Married: not married seems to drop the risk
+Residental type: Urban seems to drop the risk
+Glocuse levels: Seems to drop the Risk Significly 
+Smoking: Smokes seems to increse the risk significly  

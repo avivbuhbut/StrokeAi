@@ -22,6 +22,7 @@ import pickle
 
 
 dataset = pd.read_csv('C:/Users/avivb/PycharmProjects/StrokeAi1/healthcare-dataset-stroke-data.csv')
+df = pd.read_csv('C:/Users/avivb/PycharmProjects/StrokeAi1/healthcare-dataset-stroke-data.csv')
 
 dataset.isna().sum()
 
@@ -299,32 +300,11 @@ for i in range(len(outputs)):
                        ), output)
 
 
-print(dataset.getSample(1))
 
 
-"""
-
-pkl_filename = "StrokeModelBigData.pkl"
-with open(pkl_filename, 'rb') as file: #load the network (the network in now called model)
-  network = pickle.load(file)
-optimizer = BackpropTrainer(module=network, dataset= dataset, learningrate=0.001)
 
 
-for i in range(len(outputs)):
-    print('Desired result: ',outputs[i])
-    test = np.array([MaleFemale[i][0],MaleFemale[i][1],
-                       input[i][1], input[i][2], input[i][3],
-                       EverMarried[i][0], EverMarried[i][1],
-                       WorkType[i][0], WorkType[i][1],WorkType[i][2], WorkType[i][3],WorkType[i][4],
-                       Residence_type[i][0], Residence_type[i][1],
-                       input[i][7], #Gloucose
-                       input[i][8],#bmi
-                       smoking_status[i][0],smoking_status[i][1],smoking_status[i][2],smoking_status[i][3],
-                       ])
 
-    result = network.activate(test)
-    percentage = "{:.0%}".format(float(result))
-    print('Net Result: ', percentage)
 
 """
 
@@ -349,7 +329,7 @@ optimizer = BackpropTrainer(module=network, dataset=dataset, learningrate=0.0001
 error_average = optimizer.train()
 
 while epoch < epochLimit:
-    if epoch > 98000 and error_average > 0.01:
+    if epoch > 98000 and error_average > 0.001:
         epochLimit = epochLimit + 1000
     error_average = optimizer.train()
     epoch= epoch+1
@@ -361,7 +341,7 @@ while epoch < epochLimit:
             pkl_filename = "StrokeModelBigData.pkl"
             with open(pkl_filename, 'wb') as file:
                 pickle.dump(network, file)
-        if epoch %50 ==0:
+        if epoch %5000 ==0:
             for i in range(len(outputs)):
                 print('Desired result: ',outputs[i])
                 test = np.array([MaleFemale[i][0],MaleFemale[i][1],
@@ -389,40 +369,68 @@ plt.ylabel('Error')
 plt.plot(error)
 plt.show()
 
-
-"""
-optimizer = BackpropTrainer(module=network, dataset= dataset, learningrate=0.008)
-error_average = optimizer.train()
-print(error_average)
-
-
-
-for i in range(len(outputs)):
-    print('Desired result: ',outputs[i])
-    result = network.activate(input[i])
-    percentage = "{:.0%}".format(float(result))
-    print('Net Result: ', percentage)
-    
-
-
-
 pkl_filename = "StrokeModelBigData.pkl"
 with open(pkl_filename, 'wb') as file:
     pickle.dump(network, file)
 
 
 
-print('Desired result: ', outputs[0])
-result = network.activate(input[0])
-percentage = "{:.0%}".format(float(result))
-print('Net Result: ', percentage)
 
-
-#print(input[0])
-test = np.array([1 ,29, 0 ,0,1,  2, 1,90 , 25.8 ,2])
-#print(test)
-#print('Desired result: ', outputs[0])
-result = network.activate(test)
-percentage = "{:.0%}".format(float(result))
-print('Net Result: ', percentage)
 """
+
+
+
+pkl_filename = "StrokeModelBigData.pkl"
+with open(pkl_filename, 'rb') as file: #load the network (the network in now called model)
+  network = pickle.load(file)
+
+optimizer = BackpropTrainer(module=network, dataset= dataset, learningrate=0.008)
+error_average = optimizer.train()
+print(error_average)
+
+testCostumeInput = dataset.getSample(969)
+
+
+result = network.activate(np.array([MaleFemale[969][0], MaleFemale[969][1],
+                     input[969][1], input[969][2], input[969][3],
+                     EverMarried[969][0], EverMarried[969][1],
+                     WorkType[969][0], WorkType[969][1], WorkType[969][2], WorkType[969][3], WorkType[969][4],
+                     Residence_type[969][0], Residence_type[969][1],
+                     input[969][7],  # Gloucose
+                     input[969][8],  # bmi
+                     smoking_status[969][0], smoking_status[969][1], smoking_status[969][2], smoking_status[969][3],
+                     ]))
+percentage = "{:.0%}".format(float(result))
+print('Net Result: ', percentage)
+
+
+
+"""
+result = network.activate([testCostumeInput])
+percentage = "{:.0%}".format(float(result))
+print('Net Result: ', percentage)
+
+
+for i in range(len(outputs)):
+    print('Desired result: ', outputs[i])
+    test = np.array([MaleFemale[i][0], MaleFemale[i][1],
+                     input[i][1], input[i][2], input[i][3],
+                     EverMarried[i][0], EverMarried[i][1],
+                     WorkType[i][0], WorkType[i][1], WorkType[i][2], WorkType[i][3], WorkType[i][4],
+                     Residence_type[i][0], Residence_type[i][1],
+                     input[i][7],  # Gloucose
+                     input[i][8],  # bmi
+                     smoking_status[i][0], smoking_status[i][1], smoking_status[i][2], smoking_status[i][3],
+                     ])
+    result = network.activate(test)
+    percentage = "{:.0%}".format(float(result))
+    print('Net Result: ', percentage)
+
+"""
+
+df.loc[1027, 'hypertension'] = 0
+print(df.loc[1027, 'hypertension'])
+df.to_csv("C:/Users/avivb/PycharmProjects/StrokeAi1/healthcare-dataset-stroke-data.csv", index=False)
+
+
+print(input[969,:])
